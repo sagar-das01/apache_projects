@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Local Installation</title>
+</head>
+<body>
+    <h2>Airflow local installation steps</h2>
+    <p>
+        <ol>
+            <li>Create a local python environment inside the project directory -</li>
+             >> python -m venv py_env [py_env -> name fo the python environment] 
+
+            <li>source the virtual environment - </li>
+             >> source py_env/bin/activate 
+             or
+             >> . py_env/in/activate [if the "source" command is not accessible]
+
+            <li>Install Apache Airflow locally - </li>
+             >> pip install apache-airflow 
+             or
+             >> conda install apche-airflow [for anaconda based python environment]
+            
+             <li>Set the current directory as the airflow home - </li>
+             >> cd <dir_path where airflow is installed>
+             >> export AIRFLOW_HOME=~/airflow [use absolute path, avoid using any relative path]
+            
+            <li>Initialize the airflow database</li>
+             >> airflow db init
+               
+            <li>Create new user for airflow</li>
+                Airflow does not use any default username and password when we are using a python wheel
+                We need to use the following command to create a new user [admin]
+
+             For Airflow>=2.0.0
+
+             >> airflow users create --role Admin --username admin --email admin --firstname admin --lastname admin --password admin
+
+            <li>Start the airflow webserver</li>
+             >> airflow webserver -p 8080 [The default port for airflow server is 8080] <br>
+        
+             If airflow fails to start @ the default port, change the port in "airflow.cfg" file <br>
+             present in the same folder, then use the following command to start the server in the new port
+
+             >> airflow webserver -p <newportNumber>
+
+            Airflow will start in the following terminal -> localhost:808
+
+        </ol>
+
+        Everytime we want to start Airflow/run Airflow commands, we must perform the following 2 tasks --emailul
+        
+    </p>
+
+    <p>
+        As suggested, we should use  SQLite as metadata DB for dev/testing purposes only <br><br>
+
+        We must use Postgres/MySQL for the production server. <br>
+        Also we must not use SequentialExecutor in production. <br>
+    </p>
+
+    <h2>Dashboard Issue : The scheduler does not appear to be running</h2>
+    <p>
+        This is a common error in Airflow for which we need to restart the scheduler in a new shell. <br>
+        Followed by refreshing the dashboard. <br>
+        Steps :- 
+                <ol>
+                    <li>Open a new terminal</li>
+                    <li>Export the airflow environment</li>
+                        >> export AIRFLOW_HOME=~/airflow [As we have set earlier]
+                    <li>source the local python environment</li>
+                        >> source py_env/bin/activate [As configured previously]
+                    <li>Run the Airflow Scheduler</li>
+                        >> airflow scheduler  [command to start the airflow scheduler]
+                </ol> 
+        After these steps just refresh the dashboard and the message will be gone. <br>
+        And we will be able to schedule tasks. 
+
+    </p>
+
+</body>
+</html>
